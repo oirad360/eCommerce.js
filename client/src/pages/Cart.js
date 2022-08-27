@@ -28,6 +28,16 @@ export default function Cart(props) {
                 if (res.feedback === "ok") props.getSession()
             })
     }
+
+    function buy() {
+        fetch("/cart/buy")
+            .then((res) => {
+                return res.json()
+            })
+            .then((res) => {
+                props.getSession()
+            })
+    }
     return (
         <article className='container flex-grow-1 py-5'>
             <h1>Il tuo carrello</h1>
@@ -52,9 +62,7 @@ export default function Cart(props) {
                         "Nessun risultato."
                 }
             </div>
-            <button className="btn btn-primary btn-large">
-                Ordina
-            </button>
+            {props.user && props.user.cart.length > 0 && <button className="btn btn-primary btn-large" onClick={buy}>Ordina</button>}
         </article>
     )
 }

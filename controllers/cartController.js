@@ -4,30 +4,6 @@ const Product = models.Product
 const User = models.User
 
 const addCart = async (req, res) => {
-    /**
-     * $product=Product::find($productID);
-        $user=$product->user_product()->where('user_id',session('id'))->first();
-        $quantity=$product->quantity;
-        if($val==="true"){
-            if($quantity>0){
-                if(!isset($user)){
-                    $product->user_product()->attach(session('id'),["wishlist"=>false,"bought"=>false,"cart"=>1]);
-                    return 1;
-                }
-                if($user->pivot->cart<$quantity){
-                    $product->user_product()->updateExistingPivot(session('id'),["cart"=>$user->pivot->cart+1]);
-                    return 1;
-                }
-                return 0;
-            }
-            return 0;
-        } else {
-            $product->user_product()->updateExistingPivot(session('id'),["cart"=>$user->pivot->cart-1]);
-            if($user->pivot->cart==0 && $user->pivot->bought==0 && $user->pivot->wishlist==false) $product->user_product()->detach(session('id'));
-            return -1;
-        }
-     */
-    console.log("----------------------------------------------")
     const user = await User.findByPk(req.session.user.id)
     const quantity = (await Product.findByPk(req.params.productId, { attributes: ['quantity'] })).quantity
 
@@ -125,6 +101,36 @@ const addCart = async (req, res) => {
 
 }
 
+const buy = async (req, res) => {
+    const user = await User.findByPk(req.session.user.id)
+    const products = await user.getUserProducts({
+        through: {
+            where: {
+                cart: {
+                    [Op.gt]: 0
+                }
+            }
+        },
+        joinTableAttributes: ['cart']
+    })
+    const result = {
+        bought: [],
+        notBought: []
+    }
+    for (const product of products) {
+        if (product.quantity > product.UserProduct.cart) {
+            await product.update({ quantity: product.quantity - product.UserProduct.cart })
+            await user.addUserProducts(product.id, { through: { cart: 0, bought: product.UserProduct.cart } })
+            result.bought.push(product)
+        } else result.notBought.push(product)
+    }
+    req.session.user = { ...req.session.user, cartCount: 0, cart: [] }
+    req.session.save()
+    res.send(result)
+
+}
+
 module.exports = {
-    addCart
+    addCart,
+    buy
 }

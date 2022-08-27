@@ -8,7 +8,7 @@ export default function Footer() {
                     <div className="col col-6 col-sm-5 col-md-4 col-lg-3 mx-auto align-self-center">{/*è una colonna che è larga 8 fino al breakpoint sm, 5 fino al md, 4 da md in poi (non conta l'ordine in cui sono scritte le classi) */}
                         <a href="https://www.unict.it">
                             <img
-                                src="assets/logoUniCT.jpg"
+                                src="/assets/logoUniCT.jpg"
                                 className="w-100 rounded"
                                 alt="UniCT"
                             />

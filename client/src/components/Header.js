@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 export default function Header(props) {
     return (
-        <header style={{ backgroundImage: "url(assets/shutterstock_1216923970SPOSTATO.jpg)", backgroundSize: "cover", backgroundPosition: "center", height: "300px" }}>
+        <header style={{ backgroundImage: "url(/assets/shutterstock_1216923970SPOSTATO.jpg)", backgroundSize: "cover", backgroundPosition: "center", height: "300px" }}>
             <nav className="navbar navbar-dark navbar-expand-lg bg-dark fixed-top" style={{ "--bs-bg-opacity": ".9" }}>
                 <div className="container-fluid">
                     <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">

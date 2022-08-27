@@ -10,6 +10,7 @@ initialize()
         const loginRoutes = require('./routes/loginRoutes')
         const homeRoutes = require('./routes/homeRoutes')
         const cartRoutes = require('./routes/cartRoutes')
+        const sellerRoutes = require('./routes/sellerRoutes')
         app.use((req, res, next) => {
             res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
             res.setHeader("Access-Control-Allow-Headers", "Content-Type")
@@ -22,29 +23,15 @@ initialize()
             resave: false,
             saveUninitialized: true
         }))
-        /* app.use((req, res, next) => {
-            console.log("-----------new request:  --------------")
-            console.log("host: ", req.hostname)
-            console.log("path: ", req.path)
-            console.log("method: ", req.method)
-            console.log("---------------------------------------")
-            next()
-        }) */
 
         app.use(signupRoutes)
         app.use(loginRoutes)
         app.use(homeRoutes)
         app.use(cartRoutes)
+        app.use(sellerRoutes)
 
         app.listen(PORT, () => {
             console.log("server listening on port " + PORT + "...")
-            /* require('./models/User')
-            require('./models/Product')
-            require('./models/ProductsLocation')
-            require('./models/Likes')
-            require('./models/UserProduct')
-            require('./models/Review')
-            require('./models/Layout') */
         })
     })
 
